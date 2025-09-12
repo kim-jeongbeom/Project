@@ -1,1 +1,137 @@
+JPA Criteria API는 JPA 2.0에서 도입된 타입 안전한 쿼리 작성 방법입니다.
+이는 SQL 쿼리를 문자열로 작성하는 대신, 자바 코드로 쿼리를 구성할 수 있게 하여 컴파일 시점에 오류를 발견할 수 있고, 리팩토링에 유리합니다.
+Criteria API를 사용하면 동적 쿼리를 쉽게 생성할 수 있습니다.
+
+Criteria API 구성요소
+1. CriteriaBuilder - Criteria 쿼리를 작성하기 위한 팩토리 클래스로, EntityManager로부터 얻을 수 있습니다.
+
+CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+2. CriteriaQuery - 쿼리 자체를 나타내는 객체로, CriteriaBuilder를 사용해 생성합니다.
+
+CriteriaQuery<User> cq = cb.createQuery(User.class);
+
+3. Root - 쿼리의 FROM 절을 나타내며, 조회할 엔티티를 지정합니다.
+
+Root<User> user = cq.from(User.class);
+
+4. Predicate - WHERE 절의 조건을 나타내는 객체로, 여러 조건을 결합할 수 있습니다.
+
+Predicate condition = cb.equal(user.get("name"), "John");
+cq.where(condition);
+
+
+Criteria API 사용 예제
+
+
+Bean 객체 주입 - Spring Bean으로 등록된 EntityManager를 주입받아야 Criteria 관련 클래스들을 사용할 수 있습니다.
+
+@RequiredArgsConstructor
+public class UserService() {
+
+    private final EntityManager entityManager;
+
+    public void getUser(){
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<User> cq = cb.createQuery(User.class);
+            Root<User> user = cq.from(User.class);
+
+            •••
+
+    }
+}
+
+SELECT 예제 - CriteriaBuilder는 다양한 선택 항목을 생성할 수 있습니다. 단일 필드, 엔티티, 복합 필드 등을 선택할 수 있습니다.
+
+public List<User> findUsersByCriteria(String name) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> cq = cb.createQuery(User.class);
+    Root<User> user = cq.from(User.class);
+
+    if (name == null) {
+        cq.select(user);
+    } else {
+        cq.select(user.get("name"));
+    }
+
+    return entityManager.createQuery(cq).getResultList();
+}
+
+WHERE 예제 - CriteriaBuilder는 다양한 조건을 표현하는 Predicate 객체를 생성할 수 있습니다.
+이들은 CriteriaQuery의 where 메서드에 전달되어 쿼리의 조건을 정의합니다.
+
+public List<User> findUserByCriteria(String name, Integer age) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> cq = cb.createQuery(User.class);
+    Root<User> user = cq.from(User.class);
+
+    List<Predicate> predicates = new ArrayList<>();
+
+    if (name ≠ null)
+        predicates.add(cb.equal(user.get("name"), name));
+    if (age ≠ null)
+        predicates.add(cb.equal(user.get("age"), age));
+
+    cq.where(predicates.toArray(new Predicate[0]));
+
+    return entityManager.createQuery(cq).getResultList();
+}
+
+ORDER 예제 - CriteriaBuilder는 정렬 조건을 생성할 수 있습니다. asc,desc 메서드를 사용하여 오름차순 또는 내림차순 정렬 정의
+
+public List<User> findUserByCriteria() {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> cq = cb.createQuery(User.class);
+    Root<User> user = cq.from(User.class);
+
+    cq.select(user);
+    cq.orderBy(cb.asc(user.get("name"))); // 이름 오름차순 정렬
+    cq.orderBy(cb.desc(user.get("age"))); // 나이 내림차순 정렬
+
+    return entityManager.createQuery(cq).getResultList();
+}
+
+GROUP BY 예제 - "department" 단일 필드를 조회하며 해당 필드에 대해 그룹화를 적용하는 예제입니다.
+
+public List<User> findUserByCriteria() {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> cq = cb.createQuery(User.class);
+    Root<User> user = cq.from(User.class);
+
+    cq.select(user.get("department")); // 모든 필드 선택
+    cq.groupBy(user.get("department"));
+
+    return entityManager.createQuery(cq).getResultList();
+}
+
+JOIN 예제 - Root로 지정한 엔티티에 조인할 엔티티는 Root 객체의 join 메서드로 지정할 수 있습니다.
+
+public List<User> findUserByCriteria() {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> cq = cb.createQuery(User.class);
+    Root<User> user = cq.from(User.class);
+
+    Join<User, Department> department = user.join("department");
+    cq.select(user).where(cb.equal(department.get("name"), "IT"));
+
+    cq.select(user.get("department")); // 모든 필드 선택
+    cq.groupBy(user.get("department"));
+
+    return entityManager.createQuery(cq).getResultList();
+}
+
+장점
+• 빌더 클래스로 컴파일 단계에서 문법 오류를 확인해볼 수 있습니다.
+• 쿼리문을 문자열 그대로 작성 시 발생할 수 있는 휴먼 에러를 방지할 수 있습니다.
+단점
+• 코드가 복잡해지면 가독성이 떨어지게 된다.
+• API 사용에 대한 러닝커브가 존재한다.
+
+
+
+
+
+
+
+
 
