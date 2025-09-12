@@ -1,1 +1,20 @@
+기본 개념
+복잡하거나 커스텀한 쿼리가 필요한 경우, @Query 어노테이션을 사용해 JPQL(혹은 native SQL)을 직접 작성할 수 있다.
 
+기본 사용법
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    @Query("SELECT m FROM Member m WHERE m.username = :username AND m.age > :age")
+    List<Member> findUser(@Param("username") String username, @Param("age") int age);
+
+    @Query(value = "SELECT * FROM member WHERE username = :username", nativeQuery = true)
+    List<Member> findByNativeQuery(@Param("username") String username);
+}
+
+• @Param을 이용해 파라미터를 바인딩한다.
+• nativeQuery = true를 사용하면 SQL 문법 그대로 쓸 수 있다.
+장점
+• JPQL을 직접 작성하기 때문에 복잡한 조건을 자유롭게 처리 가능하다.
+• 성능을 위해 DB에 특화된 쿼리를 쓸 수도 있다.
+단점
+• 문자열로 작성되므로 컴파일 타임에 문법 오류를 잡을 수 없다.
+• 엔티티 이름, 속성명이 변경될 경우 쿼리도 함께 수정해야 한다.
