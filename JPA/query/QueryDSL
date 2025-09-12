@@ -1,0 +1,31 @@
+기본 개념
+QueryDSL은 타입 안전(type-safe)한 동적 쿼리를 작성할 수 있게 해주는 프레임워크다.
+JPQL을 문자열이 아닌 Java 코드로 작성할 수 있어 컴파일 시점에 오류를 잡을 수 있다.
+
+기본 사용법
+1. Gradle/Maven에 QueryDSL 의존성을 추가하고, Q-Type 클래스를 생성한다.
+2. JPAQueryFactory를 통해 쿼리를 작성한다.
+
+@RequiredArgsConstructor
+@Repository
+public class MemberQueryRepository {
+    private final JPAQueryFactory queryFactory;
+
+    public List<Member> findByUsername(String username) {
+        QMember member = QMember.member;
+
+        return queryFactory
+                .selectFrom(member)
+                .where(member.username.eq(username))
+                .fetch();
+    }
+}
+
+• QMember는 빌드 시 자동 생성된 QueryDSL 전용 클래스다.
+• .where() 안에 BooleanExpression을 조립해 동적 쿼리를 작성할 수 있다.
+장점
+• 컴파일 시점에 문법 오류를 잡아준다 (IDE 자동완성, 리팩터링 친화적).
+• 복잡한 동적 쿼리를 유연하고 깔끔하게 처리할 수 있다.
+단점
+• 초기 셋업(의존성, Q타입 생성) 비용이 든다.
+• 순수 JPA, Spring Data JPA에 비해 학습 비용이 있다.
