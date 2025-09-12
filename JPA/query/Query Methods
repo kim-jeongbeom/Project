@@ -1,1 +1,17 @@
+Spring Data JPA에서는 메서드 이름 자체를 규칙에 맞게 작성하면 자동으로 쿼리가 생성된다.
+이를 쿼리 메서드 혹은 메서드 네이밍 방식이라고 한다.
 
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    List<Member> findByUsername(String username);
+    List<Member> findByAgeGreaterThan(int age);
+    List<Member> findByUsernameAndAge(String username, int age);
+}
+
+• findBy, countBy, existBy 등 키워드를 통해 SELECT, COUNT, EXISTS 등의 쿼리를 자동으로 만들어 준다.
+• AND, OR, BETWEEN, IN 등 키워드도 사용할 수 있다.
+장점
+• 매우 간단하다. 이름만으로도 충분히 많은 쿼리를 자동 생성할수 있다.
+• 유지보수가 용이하다. 쿼리가 명시적으로 보이지 않기 때문에 추상화가 잘 되어 있다.
+단점
+• 복잡한 조건이 늘어나면 메서드 이름이 지나치게 길어지고 가독성이 떨어진다.
+• 동적 쿼리(조건에 따라 WHERE 절이 달라지는 쿼리)에는 부적합하다.
