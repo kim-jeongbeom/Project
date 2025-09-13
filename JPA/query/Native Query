@@ -1,1 +1,33 @@
+NativeQuery는 JPQL이 아닌 SQL을 직접 정의하여 사용하는 방식이다.
+위에서 얘기한것과 같이 function과 join을 하는 경우 JPQL을 사용할수도 있지만 SQL을 직접 정의할수있는 NativeQuery를 사용할 수 있다.
 
+@Query를 이용하여 NativeQuery를 작성하는 방법은 @Query 속성중 nativeQuery의 값을 true로 설정하며 value에는 SQL문을 그대로 작성하면 된다.
+DTO매핑의 경우 JPQL을 사용할때와는 다르게 DTO Class가 아닌 Getter만 존재하는 interface를 정의하며 네이밍은 SQL의 리턴되는 칼럼명과 일치해야한다.
+다음은 예제이기 때문에 Repository에 interface를 정의하였으며 구조에 맞는 위치에 정의해도 상관없다.
+
+public interface UserRepository extends JpaRepository<User, String> {
+    @Query(value = "select user.id as id, user.name as name, user.phone as phone, json_extract(user.register_info, '$.id)) as registerInfo, str_to_date(json_unquote(json_extract(user.register_info, '$.date)), '%Y-%m-%d') as registerDate, user.dept_id as deptId, dept.name as deptName " +
+            "from user user " +
+            "left outer join dept dept on user.dept_id = dept.id " +
+            "where match (user.name) against (:name in boolean mode) > 0", nativeQuery = true)
+    List<UserNativeVo> findTest4(@Param("name") String name);
+
+    interface UserNativeVo {
+        String getId();
+        String getName();
+        String getPhone();
+        String getRegisterInfo();
+        Stirng getRegisterDate();
+        String getDeptId();
+        String getDeptName();
+    }
+}
+
+장점
+1. DB에 직접적으로 쿼리를 실행시켜 속도가 빠르다.
+2. SQL 언어를 전체적으로 사용가능하다.
+3. 여러 조인이나 복잡한 쿼리를 작성할 때 직관적이며 이해하기 쉽다.
+단점
+1. 특정 DB에 대해 쿼리를 작성하기에 종속성이 높아질 수 있고 DB가 수정되면 쿼리를 다시 만들어야한다.
+2. 결과를 Object 리스트로 반환하기에 JPQL의 TypedQuery보다 안정성 부분에서 미흡하다.
+3. 주의할 점으로 사용자에게 입력된 값을 매개변수로 바인딩하거나 따로 유효성 검사가 필요할 수 있다.
