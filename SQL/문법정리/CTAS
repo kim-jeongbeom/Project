@@ -1,0 +1,33 @@
+CREATE TABLE AS SELECT ...
+
+SubQuery Select문을 이용해서 새로운 테이블을 생성하는 방식이다. Create Table As Select의 앞 글자를 따서 CTAS라고도 한다.
+CTAS문은 주로 OLAP처럼 분석작업이 많은 환경에서 주로 사용하게 된다.
+필요한 데이터를 원본데이터의 카피로 만들어 속도도 향상시킬 수 있고 원데이터를 훼손시키지 않고 작업을 할 수 있습니다.
+
+CTAS 생성
+
+CREATE TABLE [테이블 이름] AS
+SELECT [컬럼1], [컬럼2] ...
+FROM [원본 테이블]
+WHERE [조건];
+
+테이블 복제 - 기존 테이블 employees를 복제하여 backup_employees 테이블을 생성합니다.
+
+CREATE TABLE backup_employees AS
+SELECT *
+FROM employees;
+
+특정 데이터만 복사 - products 테이블에서 1000원 이상의 제품만 expensive_products 테이블로 만듭니다.
+
+CREATE TABLE expensive_products AS
+SELECT product_name, price
+FROM products
+WHERE price >= 1000;
+
+CTAS의 활용
+• 데이터 백업 : 특정 시점의 데이터를 새로운 테이블에 복사하여 백업으로 사용할 수 있습니다.
+• 성능 분석 : 복잡한 쿼리의 결과를 임시 테이블로 저장한 후 분석할 수 있습니다.
+• 데이터 마이그레이션 : 다른 형식의 데이터로 데이터를 옮길 때 중간 테이블로 활용할 수 있습니다.
+
+
+
