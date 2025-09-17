@@ -1,11 +1,33 @@
-공통된 부분만 골라 결합하는 Inner Join과 다르게 공통되지 않은 행도 유지한다.
-이때 두 테이블 모두의 값을 유지하면 Full Outer Join
-왼쪽 테이블 값만 유지하면 Left Outer Join
-오른쪽 테이블 값만 유지하면 Right Outer Join이라 한다.
-Mysql에서는 FULL OUTER JOIN을 지원하지 않으므로 LEFT OUTER JOIN 결과와 RIGHT OUTER JOIN 결과를 UNION하여 사용해야 한다.
+• FULL OUTER 
 
 SELECT 조회할 컬럼
 FROM 테이블1
 FULL OUTER JOIN 테이블2
 ON 조건문
 [WHERE 추가조건문]
+
+공통된 부분만 골라 결합하는 Inner Join과 다르게 공통되지 않은 행도 유지한다.
+이때 두 테이블 모두의 값을 유지하면 Full Outer Join
+왼쪽 테이블 값만 유지하면 Left Outer Join
+오른쪽 테이블 값만 유지하면 Right Outer Join이라 한다.
+Mysql에서는 FULL OUTER JOIN을 지원하지 않으므로 LEFT OUTER JOIN 결과와 RIGHT OUTER JOIN 결과를 UNION하여 사용해야 한다.
+
+• LEFT OUTER
+
+SELECT 조회할 컬럼
+FROM 기준테이블1
+LEFT OUTER JOIN 테이블 2
+ON 조건문
+[WHERE 추가조건문]
+
+왼쪽 테이블을 기준으로 일치하는 행만 결합되고, 일치하지 않는 부분은 null 값으로 채워짐.
+
+• RIGHT OUTER
+
+SELECT 조회할 컬럼
+FROM 기준테이블1
+RIGHT OUTER JOIN 테이블 2
+ON 조건문
+[WHERE 추가조건문]
+
+오른쪽 테이블을 기준으로 일치하는 행만 결합되고, 일치하지 않는 부분은 null 값으로 채워짐.
