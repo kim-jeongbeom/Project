@@ -1,1 +1,18 @@
+1)
+SELECT 조회할컬럼
+FROM 테이블1, 테이블2
+
+2)
+SELECT 조회할컬럼
+FROM 테이블1
+JOIN 테이블2
+
+3)
+SELECT 조회할컬럼
+FROM 테이블1
+CROSS JOIN 테이블2
+
+• 곱집합
+• 두 테이블 데이터의 모든 조합
+• 테이블1의 row * 테이블2의 row 개수만큼의 row를 가진 테이블 생성
 
