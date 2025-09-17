@@ -1,1 +1,11 @@
+공통된 부분만 골라 결합하는 Inner Join과 다르게 공통되지 않은 행도 유지한다.
+이때 두 테이블 모두의 값을 유지하면 Full Outer Join
+왼쪽 테이블 값만 유지하면 Left Outer Join
+오른쪽 테이블 값만 유지하면 Right Outer Join이라 한다.
+Mysql에서는 FULL OUTER JOIN을 지원하지 않으므로 LEFT OUTER JOIN 결과와 RIGHT OUTER JOIN 결과를 UNION하여 사용해야 한다.
 
+SELECT 조회할 컬럼
+FROM 테이블1
+FULL OUTER JOIN 테이블2
+ON 조건문
+[WHERE 추가조건문]
