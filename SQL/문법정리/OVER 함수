@@ -14,3 +14,5 @@ ORDER BY YYMM DESC
 SELECT YYMM,
 SUM(TOT_PRICE) OVER(ORDER BY YYMM DESC) AS PRICE
 FROM TABLE1
+
+사용시기 : 전체 데이터가 아닌 특정 부분집합의 데이터에 대해 집계 함수나 순위 함수를 적용하고 싶을 때 사용한다.
