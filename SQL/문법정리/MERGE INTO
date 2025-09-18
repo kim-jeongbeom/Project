@@ -1,0 +1,30 @@
+• MERGE문은 조건에 따라 데이터의 삽입, 갱신, 삭제 작업을 한번에 할 수 있게 해주는 문입니다.
+• 해당 행이 존재하는 경우 UPDATE or DELETE 문을 수행하고, 새로운 행인 경우 INSERT 문을 수행합니다.
+• 대상 테이블에 대한 UPDATE/INSERT 조건은 ON 절에 결정됩니다.
+
+예시
+MERGE [hint]
+    INTO [schema]{table|view}[t_alias]
+     USING{[schema]{table|view} | subquery}[t_alias]
+     ON (condition)
+  WHEN MATCHED THEN
+  UPDATE SET column = {expr|DEFAULT}
+        [, column = {expr|DEFAULT}]...
+  [DELETE where_clause]
+  WHEN NOT MATCHED THEN
+  INSERT [(column [, column]...)]
+  VALUES({expr[,expr]...|DEFAULT})
+
+• INTO : DATA가 UPDATE 되거나 INSERT 될 테이블 또는 뷰를 지정
+• USING : 비교할 SOURCE 테이블 또는 뷰나 서브쿼리를 지정, INTO 절의 테이블과 동일하거나 다를 수 있다.
+• ON : UPDATE나 INSERT를 하게 될 조건
+  • 해당 조건 만족하는 DATA : WHEN MATCHED THEN 절 실행
+  • 해당 조건 만족하는 DATA가 없으면 : WHEN NOT MATCHED THEN 절 실행
+• WHEN MATCHED THEN : ON 조건절이 TRUE인 ROW에 수행할 내용 (UPDATE, DELETE 가능)
+• WHEN NOT MATCHED THEN : ON 조건절에 맞는 ROW가 없을 때 수행할 내용 (INSERT)
+
+
+
+
+
+
