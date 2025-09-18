@@ -1,1 +1,25 @@
+• SQL 하위 쿼리가 메인 쿼리의 각 행에 접근할 수 있도록 해주는 조인 방식
+• 표준 SQL 및 PostgreSQL, MySQL 8.0이상, Oracle 등에서 지원되는 기능
+• LATERAL 키워드를 사용하면 서브 쿼리 안에서 외부 쿼리의 칼럼을 자유롭게 참조 가능
+• 전통적인 JOIN에서는 서브쿼리 내에서 외부 쿼리의 컬럼을 직접 참조할 수 없지만, LATERAL JOIN은 이를 가능케 하여 더욱 유연한 데이터 변환 및 분석이 가능해짐
 
+
+LATERAL JOIN의 장점
+• 행별 동적 데이터 추출
+• N개 제한 쉽게 처리
+• 가독성 및 유지보수성
+• 유연한 활용
+
+예시
+SELECT *
+FROM TABLE_A AS a
+LEFT JOIN LATERAL (
+    SELECT *
+    FROM TABLE_B
+    WHERE TABLE_B.tableAId = a.id
+    ORDER BY TABLE_B.createdAt DESC
+    LIMIT 3
+) AS b
+ON b.tableAId = a.id
+ORDER BY a.createdAt DESC
+LIMIT 0,5
