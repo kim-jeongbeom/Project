@@ -23,3 +23,5 @@ LEFT JOIN LATERAL (
 ON b.tableAId = a.id
 ORDER BY a.createdAt DESC
 LIMIT 0,5
+
+사용 시기 : 쿼리 로직을 논리적으로 분리하거나, 동일한 서브쿼리가 여러 번 반복될 때 사용한다.
