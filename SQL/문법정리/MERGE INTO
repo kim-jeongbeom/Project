@@ -23,8 +23,7 @@ MERGE [hint]
 • WHEN MATCHED THEN : ON 조건절이 TRUE인 ROW에 수행할 내용 (UPDATE, DELETE 가능)
 • WHEN NOT MATCHED THEN : ON 조건절에 맞는 ROW가 없을 때 수행할 내용 (INSERT)
 
-
-
+사용 시기 : 데이터를 효율적으로 UPSERT(Update/Insert)하여 두 데이터 세트를 최신 상태로 유지하는데 사용된다.
 
 
 
