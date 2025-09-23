@@ -1,0 +1,5 @@
+INNER JOIN은 두 테이블에서 조인 조건에 맞는 행만 결과로 반환하는 반면
+JOIN은 INNER JOIN의 축약형으로 사용될 때 동일한 의미를 가진다.
+INNER JOIN은 두 테이블 모두에 일치하는 데이터만 가져오며
+JOIN은 INNER JOIN과 같거나 LEFT JOIN, RIGHT JOIN 등의 
+다른 형태의 조인으로 쓰일 수 있다.
