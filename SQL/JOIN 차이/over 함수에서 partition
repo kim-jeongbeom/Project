@@ -1,0 +1,6 @@
+PARTITION BY 절은 데이터 세트를 하나 이상의 컬럼에 따라 분할하는 역할을 한다.
+PARTITION BY를 적용하면 각 파티션 내에서 독립적으로 윈도우 함수가 적용된다.
+즉, 데이터 세트를 작은 그룹으로 나누고 각 그룹내에서 RANK가 계산된다.
+
+PARTITION BY 예시
+SELECT 집계함수([컬럼명]) OVER (PARTITION BY [컬럼명]) FROM [테이블명]
