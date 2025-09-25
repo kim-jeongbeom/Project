@@ -1,1 +1,6 @@
-
+GROUP BY 절을 통해 소그룹별 기준을 정한 후 SELECT 절에 집계함수를 사용
+집계함수의 통계정보는 NLL값을 가진 행을 제외하고 수행
+GROUP BY 절에서 SELECT 절과는 달리 ALIAS 명을 사용할 수 없다.
+집계함수는 WHERE 절에는 올수 없다 (집계함수를 사용할 수 있는 GROUP BY 절보다 WHERE 절이 먼저 수행)
+WHERE 절은 전체 데이터를 GROUP BY 절에 의한 소그룹별로 만들어진 집계 데이터중 HAVING 절에 제한 조건을 두어 조건을 만족하는 내용만 출력
+HAVING 절은 일반적으로 GROUP BY 절 뒤에 위치한다.
